@@ -1,0 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void main() {
+	int c;
+	puts("Letra");
+	c = fgetc(stdin);
+	printf("Digiatada: %c \n", c);
+	system("pause");
+}
