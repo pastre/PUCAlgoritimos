@@ -1,0 +1,23 @@
+
+#include<stdio.h> 
+#include<stdlib.h> 
+
+int main() {
+	float a1, razao, aN;
+	 int numeroDeTermos;
+
+	printf("Primeiro termo: ");
+	scanf("%f", &a1);
+	printf("\nRazao: ");
+	scanf("%f", &razao);
+	printf("\nNumero de termos: ");
+	scanf("%i", &numeroDeTermos);
+
+	for (int i = 1;i <= numeroDeTermos; i++) {
+		aN = a1 + (i - 1) *  razao;
+		printf("\nTermo de numero %i: %0.1f \n", i, aN);
+	}
+
+	system("pause");
+	return 0;
+}
