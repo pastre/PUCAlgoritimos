@@ -1,21 +1,24 @@
+
 #include<stdio.h> 
 #include<stdlib.h> 
 
 int main() {
 	float a1, razao, aN;
-	 int numeroDeTermos;
+	 int termo;
 
 	printf("Primeiro termo: ");
 	scanf("%f", &a1);
 	printf("\nRazao: ");
 	scanf("%f", &razao);
-	printf("\nNumero de termos: ");
-	scanf("%i", &numeroDeTermos);
+	printf("\nTermo: ");
+	scanf("%i", &termo);
 
-	for (int i = 1;i <= numeroDeTermos; i++) {
-		printf("O int i vale: %i", i);
+	for (int i = 1;i <= termo; i++) {
+		//printf("O int i vale: %i", i);
 		aN = a1 + (i - 1) *  razao;
-		printf("\nTermo de numero %i: %0.1f \n", i, aN);
+		if(i == termo)		
+			printf("\nTermo de numero %i: %0.1f \n", i, aN);
+		
 	}
 
 	system("pause");
