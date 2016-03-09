@@ -1,0 +1,25 @@
+#include<stdio.h> 
+#include<stdio.h> 
+#include<stdlib.h> 
+#include <math.h>
+int main() {
+	float a1, razao, aN;
+	 int termo;
+
+	printf("Primeiro termo: ");
+	scanf("%f", &a1);
+	printf("\nRazao: ");
+	scanf("%f", &razao);
+	printf("\nTermo: ");
+	scanf("%i", &termo);
+
+	for(int i = 1;i <= termo; i++) {
+			printf("O int i vale: %i", i);
+			aN = a1 + (pow(razao, (i - 1)));
+			if(i == termo)		
+			printf("\nTermo de numero %i: %0.1f \n", i, aN);
+		
+	}	
+	system("pause");
+	return 0;
+}
