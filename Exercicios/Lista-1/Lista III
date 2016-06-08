@@ -1,0 +1,246 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include <math.h>
+
+	int counter;
+
+void ex1(){
+	for(counter = 0;counter <=50; counter++){
+		printf("%d\n", counter);
+	}
+}
+
+void ex2(){
+	for(counter = 1;counter <=100;counter++){
+		printf("%d \n", counter);
+	}
+}
+
+void ex3(){
+	for(counter = 100; counter >=1; counter--){
+		printf("%d \n", counter);
+	}
+}
+
+void ex4(){
+	for(counter = 100;counter <=200; counter++){
+		printf("%d \n", counter);
+	}
+}
+
+void ex5(){
+	for(counter = 200; counter >=100; counter--){
+		printf("%d \n", counter);
+	}
+}
+
+void ex6(){
+	for(counter = 1; counter <=500; counter++){
+		if(counter % 5 == 0)
+			printf("%d \n", counter);
+	}
+}
+
+void ex7(){
+	for(counter = 1; counter <=100; counter++){
+		if(counter % 2 == 0)
+			printf("%d \n", counter);
+	}
+}
+
+void ex8(){
+	for(counter = 1; counter <=100; counter++){
+		if(counter % 2 != 0)
+			printf("%d \n", counter);
+	}
+}
+
+void ex9(){
+	for(counter = 0; counter <=20; counter++){
+		int q = counter * counter;
+		printf("%d \n", q);
+	}
+}
+
+void ex10(){
+	ex8();
+}
+
+void ex11(){
+	//Variavel que armazena os valores digitados
+	float numRecebidos[10];
+	//Variavle temporaria, usada para atribuir valores a posicao digitada (pode ser substituida por ponteiro)
+	float j;
+	//Loop para armazenar cada entrada em uma posicao no vetor
+	for(counter = 0; counter < 10; counter++){
+		scanf("%f", &j);
+		numRecebidos[counter] = j;
+		printf("\n %f \n", numRecebidos[counter]);
+	}
+	//Loop para manipular os valores do vetor
+	for(counter = 0; counter < 10; counter++){
+		//Variavel que armazena o resultado
+		float saida = numRecebidos[counter] / 2;
+		printf("\n %f", saida);
+	}
+}
+
+void ex12(){
+	//Variavel que armazena os valores digitados
+	int numRecebidos[10];
+	//Variavle temporaria, usada para atribuir valores a posicao digitada (pode ser substituida por ponteiro)
+	int j;
+	//Loop para armazenar cada entrada em uma posicao no vetor
+	for(counter = 0; counter < 10; counter++){
+		scanf("%d", &j);
+		numRecebidos[counter] = j;
+		printf("\n %d \n", numRecebidos[counter]);
+	}
+	//Loop para manipular os valores do vetor
+	for(counter = 0; counter < 10; counter++){
+		//Variavel que armazena o resultado
+		int saida = numRecebidos[counter] * numRecebidos[counter];
+		printf("\n %d", saida);
+	}
+}
+
+void ex13(){
+	//Variavel que armazena os valores digitados
+	int numRecebidos[10];
+	//Variavle temporaria, usada para atribuir valores a posicao digitada (pode ser substituida por ponteiro)
+	int j;
+	//Loop para armazenar cada entrada em uma posicao no vetor
+	for(counter = 0; counter < 10; counter++){
+		scanf("%d", &j);
+		numRecebidos[counter] = j;
+		printf("\n %d \n", numRecebidos[counter]);
+	}
+	//Loop para manipular os valores do vetor
+	for(counter = 0; counter < 10; counter++){
+		//Variavel que armazena o resultado
+		int saida = pow(numRecebidos[counter], 3);
+		printf("\n %d", saida);
+	}
+}
+
+
+void ex14(){
+	//Variavel que segura o tamanho do array - Criada para auxiliar na madulacao dos exercicos - Recebe unsigned pois nao muda
+	unsigned int tamanhoDoArray = 15;
+	//Variavel que armazena os valores digitados
+	float numRecebidos[tamanhoDoArray];
+	//Variavle temporaria, usada para atribuir valores a posicao digitada (pode ser substituida por ponteiro)
+	float j;
+	//Loop para armazenar cada entrada em uma posicao no vetor
+	for(counter = 0; counter < tamanhoDoArray; counter++){
+		scanf("%f", &j);
+		numRecebidos[counter] = j;
+		printf("\n %f \n", numRecebidos[counter]);
+	}
+	//Loop para manipular os valores do vetor
+	for(counter = 0; counter < tamanhoDoArray; counter++){
+		//Variavel que armazena o resultado
+		float saida = sqrt(numRecebidos[counter]);
+		printf("\n %f", saida);
+	}
+}
+void ex15(){
+	//Variavel que segura o tamanho do array - Criada para auxiliar na madulacao dos exercicos - Recebe unsigned pois nao muda
+	unsigned int tamanhoDoArray = 15;
+	//Variavel que armazena os valores digitados
+	float numRecebidos[tamanhoDoArray];
+	//Variavle temporaria, usada para atribuir valores a posicao digitada (pode ser substituida por ponteiro)
+	float j;
+	//Loop para armazenar cada entrada em uma posicao no vetor
+	for(counter = 0; counter < tamanhoDoArray; counter++){
+		scanf("%f", &j);
+		numRecebidos[counter] = j;
+		printf("\n %f \n", numRecebidos[counter]);
+	}
+	//Loop para manipular os valores do vetor
+	for(counter = 0; counter < tamanhoDoArray; counter++){
+		//Variavel que armazena o resultado
+		float saida = sqrt(numRecebidos[counter]);
+		printf("\n %f", saida);
+	}
+}
+
+void ex16(){
+	int soma;
+	for(counter = 1; counter <= 100; counter++){
+		printf("%d\n", counter);
+		soma += counter;	
+	}
+	printf("%d\n", soma);
+}
+
+void ex17(){
+	int soma;
+	for(counter = 1; counter <= 100; counter++){
+		printf("%d\n", counter);
+		soma = soma +  pow(counter, 2);	
+	}
+	printf("%d\n", soma);
+}
+
+void ex18(){
+	float soma;
+	for(counter = 1; counter <= 100; counter++){
+		printf("%d\n", counter);
+		soma = soma +  (counter/2);	
+	}
+	printf("%f\n", soma);
+}
+
+void ex19(){
+	int soma;
+	for(counter = 1; counter <= 100; counter++){
+		printf("%d\n", counter);
+		soma = soma +  pow(counter, 3);	
+	}
+	printf("%d\n", soma);
+}
+
+void ex20(){
+	float soma;
+	for(counter = 1; counter <= 100; counter++){
+		printf("%d\n", counter);
+		soma += counter;	
+	}
+	float media = soma / 100;
+	printf("%f\n", media);
+}
+
+void ex24(){
+	int maiorNumero=0, numeroDigitado;
+	do{
+		scanf("%d", &numeroDigitado);
+		if(numeroDigitado > maiorNumero)
+			maiorNumero = numeroDigitado;
+		counter++;
+	}while(counter <= 10);
+	printf("O maior numero digitado e %d\n", maiorNumero);
+}
+
+/** NAO TA FUNCIONANDO - AINDA.
+void ex25(){
+	int maiorNumero = 0, segundoMaiorNumero = 0, numeroDigitado;
+	do{
+		scanf("%d", &numeroDigitado);
+		if(numeroDigitado > maiorNumero){
+			maiorNumero = segundoMaiorNumero;
+			maiorNumero = numeroDigitado;
+		}
+		else if(numeroDigitado > segundoMaiorNumero)
+			segundoMaiorNumero = numeroDigitado;	
+		counter++;	
+	}while(counter <=10);
+	printf("Maior numero: %d \n Segundo maior numero: %d", maiorNumero, segundoMaiorNumero);
+	
+}
+*/
+int main(){
+	//Chama a funcao do exercicio, para manter todos em um unico arquivo
+	ex25();
+	return 0;
+}
