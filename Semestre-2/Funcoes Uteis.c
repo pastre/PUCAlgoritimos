@@ -11,6 +11,20 @@ void printArray(int *pt, int size){
 		printf("%d\t", u);
 	}
 }
+//Popula o array com entradas do usuario
+ //Entrada:
+   //array: O array a ser populado(nao sei se precisa, sepa que da pra manipular internamente)
+   //size: Tamanho do vetor a ser populado
+//Saida: Ponteiro para o vetor com os valores inseridos
+int *populaArray(int *array, int size){
+	int i, *pt;
+	for(i = 0; i < size; i++){
+		scanf(" %d", &array[i]);
+		fflush(stdin);
+	}
+	
+	return array;
+}
 
 //Faz um quicksort da array.
 //Entrada:
