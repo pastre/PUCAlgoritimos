@@ -12,6 +12,33 @@ void printArray(int *pt, int size){
 	}
 }
 
+//Faz um quicksort da array.
+//Entrada:
+  //vet: Vetor a ser organizado
+  //ini: O primeiro indice do vetor
+  //fim: O ultimo indice do vetor
+//Saida: N/A
+void quickSort(int *vet, int ini,int fim){
+	int ph = ini, i, i2, k, *pt = vet;
+	
+	for(i = ini + 1; i <= fim; i++){
+		i2 = i;
+		if(pt[i2] < pt[ph]){
+			k = pt[i2];
+			while(i2 > ph){
+				pt[i2] = pt[i2-1];
+				i2--;
+			}
+			pt[i2] = k;
+			ph++;			
+		}
+	
+		if(ph - 1 >= ini)
+			quickSort(pt,ini, ph - 1);
+		if(ph + 1 <= fim)
+			quickSort(pt, ph + 1, fim);
+	}
+}
 
 //Faz um bubble sort da array. 
 //Entrada:
