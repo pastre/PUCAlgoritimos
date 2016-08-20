@@ -25,6 +25,28 @@ int *populaArray(int *array, int size){
 	
 	return array;
 }
+//Retorna o ponteiro a um vetor com caracteres diferentes.
+//Entrada:
+	//*pt: O vetor a ser preenchido
+	//size: O tamanho deste vetor
+//Saida: O endereco do vetor
+int *newRandVet(int *pt, int size){
+	int i, j, status;
+	srand(time(NULL));
+	
+	for(i = 0; i < size; i++){
+		do{
+			pt[i] = rand() % size;
+			status = 1;
+			for(j = 0; j < i; ++j){
+				if(pt[i] == pt[j])
+					status = 0;
+			}
+		}while(status == 0);
+	}
+	
+	return pt;
+}
 
 //Faz um quicksort da array.
 //Entrada:
