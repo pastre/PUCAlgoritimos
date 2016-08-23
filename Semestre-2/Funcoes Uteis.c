@@ -147,4 +147,72 @@ int binSearch(int *prim, int *res, int size){
 	return mid;
 }
 
+//Popula uma matriz com valores lidos do teclado
+//Entrada:
+	//matriz: Endereco da matriz a ser populada
+	//lin: numero de linhas da matriz
+	//col: numero de colunas da matriz
+void populaMatriz(int *matriz, int lin, int col){
+	int i,j;	
+	puts(" Entre com os valores da matriz\n");
+	for (i=0; i<lin; i++)
+		for (j=0; j<col; j++){
+			printf("Matriz[%d][%d]= ", i,j);
+			scanf("%d",matriz+(i*col+j));
+		} 
+}
+
+//Imprime uma matriz, linha x coluna
+//Entrada:
+	//mat: Matriz a ser impressa
+	//col: numero de colunas da matriz
+	//lin: numero de linhas da matriz
+void printMat(int *mat, int col, int lin){
+	int i, j;
+	for(i = 0; i < lin; i++){
+		for(j = 0; j < col; j++){
+			printf(" %d", *(mat + (i*col + j)));			
+		}
+	}
+}
+//Encontra a diagonal principal de uma matriz
+//Entrada:
+	//matriz: matriz para se achar a diagonal primaria
+	//vetor: ponteiro para o vetor onde serao salvos os valores da diagonal
+	//lin: numero de linhs/colunas da matriz
+void diagonalPrincipal2x2(int *matriz, int *vetor, int lin){
+	int proximoValor, i = 0;
+	for(proximoValor = 0; i<lin; proximoValor =proximoValor+ lin+1){
+		vetor[i] = *(matriz + proximoValor);
+		i++;
+	}
+}
+//Printa na tela os valores da matriz triangular superior
+//Entrada:
+	//matriz: matriz para se achar os valores
+	//lin: numero de linhas ou colunas da matriz
+void printaMatrizTriangular(int *matriz, int lin){
+	int i, j, k;
+	for(i = 0; i < lin; i++)
+		for(j = 0; j < lin; j++){
+			if(i <= j){
+				k = (matriz[j*lin + i]);
+				printf(" %d", k);
+			}
+		}
+}
+//Encontra a diagonal secundaria da matriz
+//Entrada:
+	//matriz: matriz para se encontrar a diagonal secundaria
+	//vet: vetor onde os valores da diagonal secundaria serao salvos
+	//lin: numero de linhas da matriz
+//Saida: vetor apontado por *vet com todos os valores da diagonal
+void diagonalSecundaria2x2(int *matriz, int *vet, int lin){
+	int proximoValor, i = 0;
+	for(proximoValor = lin; i < lin; proximoValor += lin - 1, i++){
+		vet[i] = *(matriz + proximoValor);
+	}
+	
+}
+
 
