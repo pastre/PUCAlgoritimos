@@ -6,6 +6,7 @@
 #include "allegro5\allegro_primitives.h"
 #include "allegro5\allegro_color.h"
 
+private int jk, jh;
 //Pinta o quadrado, parametros sao matriz;tamanho;valor;x;y;lado
 void pintaQuadrado(int *, int, int, int, int, int);
 //Pinta a martiz, usando o pintaQuadrado. //Parametros:matriz;tamanho;lado;highlight;
