@@ -6,11 +6,17 @@
 #include "allegro5\allegro_primitives.h"
 #include "allegro5\allegro_color.h"
 
-private int jk, jh;
+
+#define cor1  al_map_rgb(44, 117, 255)
+#define cor2  al_map_rgb(117, 44, 255)
+#define cor3  al_map_rgb(200, 117, 44)
+#define cor4  al_map_rgb(244, 44, 117)
+
+int jk, jh;
 //Pinta o quadrado, parametros sao matriz;tamanho;valor;x;y;lado
 void pintaQuadrado(int *, int, int, int, int, int);
 //Pinta a martiz, usando o pintaQuadrado. //Parametros:matriz;tamanho;lado;highlight;
-void pintaMatriz(int, int);
+void pintaMatriz(int *, int, int, int);
 //Popula a matriz de 1 a 1. Parametros: matriz;tamanho
 void populaMatriz(int *, int);
 //Embaralha o vetor. Parametros: vetor;tamanho
@@ -30,7 +36,7 @@ void pintaMatriz(int *matriz, int size, int lado, int highlight) {
 		for (j = 0; j < size; j++) {
 			k = i*size + j;
 			if (matriz[k] == highlight)
-				al_draw_rounded_rectangle(i*lado, j*lado, i*lado + lado, j*lado + lado, 10, 10, al_map_rgb(0, 0, 0), 10);
+				al_draw_filled_rectangle(i*lado, j*lado, i*lado + lado, j*lado + lado, al_map_rgb(0, 0, 0));
 			else
 			pintaQuadrado(matriz, size, matriz[k], lado * i, lado * j, lado);
 		}
@@ -90,12 +96,12 @@ int rand_int(int max) {
 	return rnd % n;
 }
 
-void embaralhaVetor(int *array, size_t n)
+void embaralhaVetor(int *array, int n)
 {
 	if (n > 1) {
-		size_t i;
+		int i, j;
 		for (i = 0; i < n - 1; i++) {
-			size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
+			j = i + rand() / (RAND_MAX / (n - i) + 1);
 			int t = array[j];
 			array[j] = array[i];
 			array[i] = t;
@@ -109,3 +115,4 @@ int permuta(int *a, int *b) {
 	*b = c;
 	return 0;
 }
+
