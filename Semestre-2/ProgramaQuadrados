@@ -5,7 +5,7 @@
 #include "allegro5\allegro.h"
 #include "allegro5\allegro_primitives.h"
 #include "allegro5\allegro_color.h"
-#include "C:\Users\Bruno Pastre\Desktop\FuncoesUteisMatrizes.c"
+#include "C:\Temp\fm.c"
 
 #define cor1  al_map_rgb(44, 117, 255)
 #define cor2  al_map_rgb(117, 44, 255)
@@ -85,6 +85,82 @@ int proxPosNoQuad(int *matriz, int size, int quad) {
 	}
 
 	return -10;
+}
+
+void movePeca(int *matriz, int size, int peca, int moveId) {
+	switch (moveId) {
+	case 1:
+		//Mova para a direita
+		permuta(&matriz[peca], &matriz[peca + 1]);
+		break;
+	case 2:
+		//Mova para a esquerda
+		permuta(&matriz[peca], &matriz[peca - 1]);
+		break;
+	case 3:
+		//Mova para cima
+		permuta(&matriz[peca], &matriz[peca - size]);
+		break;
+	case 4:
+		//Mova para baixo
+		permuta(&matriz[peca], &matriz[peca + size]);
+		break;
+	}
+}
+
+void descePeca(int *matriz, int size, int index) {
+	int dec = index / 10, uni = index % 10;
+
+	///1:DIR	2:ESQ	3:CIMA		4:BAIXO; baixo+direita+cima+esquerda+baixo
+
+	movePeca(matriz, size, index, 4);
+	movePeca(matriz, size, index, 1);
+	movePeca(matriz, size, index, 3);
+	movePeca(matriz, size, index, 2);
+	movePeca(matriz, size, index, 4);
+}
+void sobePeca(int *matriz, int size, int index) {
+	int dec = index / 10, uni = index % 10;
+	///1:DIR	2:ESQ	3:CIMA		4:BAIXO
+	movePeca(matriz, size, index, 3);
+	movePeca(matriz, size, index, 1);
+	movePeca(matriz, size, index, 4);
+	movePeca(matriz, size, index, 2);
+	movePeca(matriz, size, index, 3);
+
+}
+void esqPeca(int *matriz, int size, int index) {
+	int dec = index / 10, uni = index % 10;
+	///1:DIR	2:ESQ	3:CIMA		4:BAIXO;	direita+baixo/cima
+	movePeca(matriz, size, index, 1);
+	if (dec == 9) {
+		movePeca(matriz, size, index, 4);
+		movePeca(matriz, size, index, 2);
+		movePeca(matriz, size, index, 2);
+		movePeca(matriz, size, index, 3);
+	}
+	else {
+		movePeca(matriz, size, index, 3);
+		movePeca(matriz, size, index, 2);
+		movePeca(matriz, size, index, 2);
+		movePeca(matriz, size, index, 4);
+	}
+}
+void dirPeca(int *matriz, int size, int index) {
+	int dec = index / 10, uni = index % 10;
+	///1:DIR	2:ESQ	3:CIMA		4:BAIXO
+	if (dec == 9) {
+		movePeca(matriz, size, index, 3);
+		movePeca(matriz, size, index, 1);
+		movePeca(matriz, size, index, 1);
+		movePeca(matriz, size, index, 4);
+	}
+	else {
+		movePeca(matriz, size, index, 4);
+		movePeca(matriz, size, index, 1);
+		movePeca(matriz, size, index, 1);
+		movePeca(matriz, size, index, 3);
+	}
 }
 
 int organiza(int *matriz, int size, int index) {
@@ -214,56 +290,69 @@ int organiza(int *matriz, int size, int index) {
 		pintaMatriz(matriz, size, LADO, PRETO);
 		al_flip_display();
 		Sleep(1000);
-	}while (nilPos != index--);
+	} while (nilPos != index--);
 
 	proxPos = proxPosNoQuad(matriz, 10, quad);
-	
+
 	printf("\nVOU COMECAR A TROCA!");
 	/// A PEDRA ESTA EM POSICAO, COMECAR A TROCAR.
-	do{
+	do {
 		decProx = proxPos / 10;
 		uniProx = proxPos % 10;
 		if (decProx == dec) {
 			//Estao na mesma linha, mecha so as colunas
 			if (uni == uniProx) {
 				//A preta esta na posicao, trocar com o quadrado certo
+				break;
 			}
 			else if (uni > uniProx) {
-				//Reduza as colunas, mova a peca para a esquerda
+				//Reduza as colunas, mova a peca para a direita
+				dirPeca(matriz, size, nilPos);
+				pintaMatriz(matriz, size, LADO, PRETO);
+				al_flip_display();
+
 			}
 			else {
 				//Mova para a esquerda
+				esqPeca(matriz, size, nilPos);
 			}
 		}
 		else if (decProx > dec) {
 			//Estao na mesma linha, mecha so as colunas
 			if (uni == uniProx) {
 				//A preta esta na posicao, trocar com o quadrado certo
+				break;
 			}
 			else if (uni > uniProx) {
-				//Reduza as colunas, mova a peca para a esquerda
+				//Reduza as linhas, mova para cima
+				sobePeca(matriz, size, nilPos);
 			}
 			else {
-				//Mova para a esquerda
+				//Mova para baixo
+				descePeca(matriz, size, nilPos);
 			}
 		}
 		else {
 			//Reduza as linhas at iguala-las
 			if (uni == uniProx) {
 				//A preta esta na posicao, trocar com o quadrado certo
+				break;
 			}
 			else if (uni > uniProx) {
-				//Reduza as colunas, mova a peca para a esquerda
+				//Reduza as colunas, mova a peca para a direita
+				dirPeca(matriz, size, nilPos);
 			}
 			else {
 				//Mova para a esquerda
+				esqPeca(matriz, size, nilPos);
 			}
 		}
-
+		pintaMatriz(matriz, size, LADO, PRETO);
+		al_flip_display();
+		printf("TO no loop");
 	} while (proxPos != index);
-
-
-
+	if (index < size)
+		return organiza(matriz, size, index++);
 	return 1;
 }
 
