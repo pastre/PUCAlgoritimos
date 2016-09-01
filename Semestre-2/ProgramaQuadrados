@@ -46,49 +46,49 @@ int pegaQuadrante(int *matriz, int size, int num) {
 int proxPosNoQuad(int *matriz, int size, int quad) {
 	int i, j, k;
 	switch (quad) {
-		case 1:
-			for (i = 0, j = size / 2; i < size / 2, j < size; i++, j++) {
-				k = i*size + j;
-				if (pegaQuadrante(matriz, size, matriz[k]) != 1){
-					return k;
-					break;
-				}
+	case 1:
+		for (i = 0, j = size / 2; i < size / 2, j < size; i++, j++) {
+			k = i*size + j;
+			if (pegaQuadrante(matriz, size, matriz[k]) != 1) {
+				return k;
+				break;
 			}
+		}
 		break;
-		case 2:
-			for (i = 0, j = 0; i < size / 2, j < size / 2; i++, j++) {
-				k = i*size + j;
-				if (pegaQuadrante(matriz, size, matriz[k]) != 2){
-					return k;
-					break;
-				}
+	case 2:
+		for (i = 0, j = 0; i < size / 2, j < size / 2; i++, j++) {
+			k = i*size + j;
+			if (pegaQuadrante(matriz, size, matriz[k]) != 2) {
+				return k;
+				break;
 			}
-			break;
-		case 3:
-			for (i = size / 2, j = 0; i < size, j < size / 2; i++, j++) {
-				k = i*size + j;
-				if (pegaQuadrante(matriz, size, matriz[k]) != 3) {
-					return k;
-					break;
-				}
+		}
+		break;
+	case 3:
+		for (i = size / 2, j = 0; i < size, j < size / 2; i++, j++) {
+			k = i*size + j;
+			if (pegaQuadrante(matriz, size, matriz[k]) != 3) {
+				return k;
+				break;
 			}
-			break;
-		case 4:
-			for (i = 0, j = size / 2; i < size / 2, j < size; i++, j++) {
-				k = i*size + j;
-				if (pegaQuadrante(matriz, size, matriz[k]) != 4) {
-					return k;
-					break;
-				}
+		}
+		break;
+	case 4:
+		for (i = 0, j = size / 2; i < size / 2, j < size; i++, j++) {
+			k = i*size + j;
+			if (pegaQuadrante(matriz, size, matriz[k]) != 4) {
+				return k;
+				break;
 			}
-			break;
+		}
+		break;
 	}
 
 	return -10;
 }
 
 int organiza(int *matriz, int size, int index) {
-	int i, j, k, nilPos = 1000000, num, quad, dec = index / 10, uni = index % 10;
+	int i, j, k, nilPos = 1000000, num, quad, dec = index / 10, uni = index % 10, proxPos, decProx, uniProx;
 	//Loop que encontra a posicao da pedra preta
 	for (i = 0; i < size; i++) {
 		for (j = 0; j < size; j++) {
@@ -104,118 +104,165 @@ int organiza(int *matriz, int size, int index) {
 	printf("A preta ta na %d \n", nilPos);
 	num = matriz[index];
 	quad = pegaQuadrante(matriz, size, num);
-///POE O PRETO DO LADO DO PRIMEIRO QUADRADO QUE PRECISA MECHER
+	///POE O PRETO DO LADO DO PRIMEIRO QUADRADO QUE PRECISA MECHER
+	do {
 		//Checa se esta na primeira metade do plano
-	if (dec > 0 && dec <= size / 2) {
-		//Checa se esta no segundo quadrante e na posicao certa
-		if (uni > 0 && uni <= size / 2 && pegaQuadrante(matriz, size, num) != 2) {
-			//Checa se o preto esta alem do quadrado a ser mechido. Caso sim, reduz nilPos ate alcancar o quadrado a ser mechido
-			if (nilPos > index) {
-				//Checa se pode pular uma linha, se nao, pula uma coluna
-				if (nilPos % size < 1) {
-					permuta(&matriz[nilPos], &matriz[nilPos -= size]);
+		if (dec > 0 && dec <= size / 2) {
+			//Checa se esta no segundo quadrante e na posicao certa
+			if (uni > 0 && uni <= size / 2 && pegaQuadrante(matriz, size, num) != 2) {
+				//Checa se o preto esta alem do quadrado a ser mechido. Caso sim, reduz nilPos ate alcancar o quadrado a ser mechido
+				if (nilPos > index) {
+					//Checa se pode pular uma linha, se nao, pula uma coluna
+					if (nilPos % size < 1) {
+						permuta(&matriz[nilPos], &matriz[nilPos -= size]);
+					}
+					else {
+						permuta(&matriz[nilPos], &matriz[size--]);
+					}
+					pintaMatriz(matriz, size, LADO, PRETO);
+					al_flip_display();
 				}
+				//nilPos esta atras de index na matriz
 				else {
-					permuta(&matriz[nilPos], &matriz[size--]);					
+					if (nilPos % size < 1) {
+						permuta(&matriz[nilPos], &matriz[nilPos += size]);
+					}
+					else {
+						permuta(&matriz[nilPos], &matriz[nilPos++]);
+					}
+					pintaMatriz(matriz, size, LADO, PRETO);
+					al_flip_display();
 				}
-				pintaMatriz(matriz, size, LADO, PRETO);
-				al_flip_display();
 			}
-			//nilPos esta atras de index na matriz
+			//Esta no primeiro quadrante
 			else {
-				if (nilPos % size < 1) {
-					permuta(&matriz[nilPos], &matriz[nilPos += size]);
+				//Checa se o preto esta alem do quadrado a ser mechido. Caso sim, reduz nilPos ate alcancar o quadrado a ser mechido
+				if (nilPos > index) {
+					//Checa se pode pular uma linha, se nao, pula uma coluna
+					if (nilPos % size < 1) {
+						permuta(&matriz[nilPos], &matriz[nilPos -= size]);
+					}
+					else {
+						permuta(&matriz[nilPos], &matriz[nilPos--]);
+					}
+					pintaMatriz(matriz, size, LADO, PRETO);
+					al_flip_display();
 				}
+				//nilPos esta atras de index na matriz
 				else {
-					permuta(&matriz[nilPos], &matriz[nilPos++]);
+					if (nilPos % size < 1) {
+						permuta(&matriz[nilPos], &matriz[nilPos += size]);
+					}
+					else {
+						permuta(&matriz[nilPos], &matriz[nilPos++]);
+					}
+					pintaMatriz(matriz, size, LADO, PRETO);
+					al_flip_display();
 				}
-				pintaMatriz(matriz, size, LADO, PRETO);
-				al_flip_display();
-			}
-		}
-		//Esta no primeiro quadrante
-		else {
-			//Checa se o preto esta alem do quadrado a ser mechido. Caso sim, reduz nilPos ate alcancar o quadrado a ser mechido
-			if (nilPos > index) {
-				//Checa se pode pular uma linha, se nao, pula uma coluna
-				if (nilPos % size < 1) {
-					permuta(&matriz[nilPos], &matriz[nilPos -= size]);
-				}
-				else {
-					permuta(&matriz[nilPos], &matriz[nilPos--]);
-				}
-				pintaMatriz(matriz, size, LADO, PRETO);
-				al_flip_display();
-			}
-			//nilPos esta atras de index na matriz
-			else {
-				if (nilPos % size < 1) {
-					permuta(&matriz[nilPos], &matriz[nilPos += size]);
-				}
-				else {
-					permuta(&matriz[nilPos], &matriz[nilPos++]);
-				}
-				pintaMatriz(matriz, size, LADO, PRETO);
-				al_flip_display();
-			}
 
-		}
-	}
-	//Esta na segunda metade
-	else {
-		//Checa se esta no segundo quadrante e na posicao certa
-		if (uni > 0 && uni <= size / 2 && pegaQuadrante(matriz, size, num) != 2) {
-			//Checa se o preto esta alem do quadrado a ser mechido. Caso sim, reduz nilPos ate alcancar o quadrado a ser mechido
-			if (nilPos > index) {
-				//Checa se pode pular uma linha, se nao, pula uma coluna
-				if (nilPos % size < 1) {
-					permuta(&matriz[nilPos], &matriz[nilPos -= size]);
-				}
-				else {
-					permuta(&matriz[nilPos], &matriz[--nilPos]);
-				}
-			}
-			//nilPos esta atras de index na matriz
-			else {
-				if (nilPos % size < 1) {
-					permuta(&matriz[nilPos], &matriz[nilPos += size]);
-				}
-				else {
-					permuta(&matriz[nilPos], &matriz[nilPos++]);
-				}
 			}
 		}
-		//Esta no primeiro quadrante
+		//Esta na segunda metade
 		else {
-			//Checa se o preto esta alem do quadrado a ser mechido. Caso sim, reduz nilPos ate alcancar o quadrado a ser mechido
-			if (nilPos > index) {
-				//Checa se pode pular uma linha, se nao, pula uma coluna
-				if (nilPos % size < 1) {
-					permuta(&matriz[nilPos], &matriz[nilPos -= size]);
+			//Checa se esta no segundo quadrante e na posicao certa
+			if (uni > 0 && uni <= size / 2 && pegaQuadrante(matriz, size, num) != 3) {
+				//Checa se o preto esta alem do quadrado a ser mechido. Caso sim, reduz nilPos ate alcancar o quadrado a ser mechido
+				if (nilPos > index) {
+					//Checa se pode pular uma linha, se nao, pula uma coluna
+					if (nilPos % size < 1) {
+						permuta(&matriz[nilPos], &matriz[nilPos -= size]);
+					}
+					else {
+						permuta(&matriz[nilPos], &matriz[--nilPos]);
+					}
 				}
+				//nilPos esta atras de index na matriz
 				else {
-					permuta(&matriz[nilPos], &matriz[nilPos--]);
+					if (nilPos % size < 1) {
+						permuta(&matriz[nilPos], &matriz[nilPos += size]);
+					}
+					else {
+						permuta(&matriz[nilPos], &matriz[nilPos++]);
+					}
 				}
 			}
-			//nilPos esta atras de index na matriz
+			//Esta no primeiro quadrante
 			else {
-				if (nilPos % size < 1) {
-					permuta(&matriz[nilPos], &matriz[nilPos += size]);
+				//Checa se o preto esta alem do quadrado a ser mechido. Caso sim, reduz nilPos ate alcancar o quadrado a ser mechido
+				if (nilPos > index) {
+					//Checa se pode pular uma linha, se nao, pula uma coluna
+					if (nilPos % size < 1) {
+						permuta(&matriz[nilPos], &matriz[nilPos -= size]);
+					}
+					else {
+						permuta(&matriz[nilPos], &matriz[nilPos--]);
+					}
 				}
+				//nilPos esta atras de index na matriz
 				else {
-					permuta(&matriz[nilPos], &matriz[nilPos++]);
+					if (nilPos % size < 1) {
+						permuta(&matriz[nilPos], &matriz[nilPos += size]);
+					}
+					else {
+						permuta(&matriz[nilPos], &matriz[nilPos++]);
+					}
 				}
-			}
 
+			}
 		}
-	}
-/// A PEDRA ESTA EM POSICAO, COMECAR A TROCAR.
-	pintaMatriz(matriz, size, LADO, PRETO);
-	al_flip_display();
-	printf("Vou comecar a troca!");
-	Sleep(500);
-	if(index < size)
-	return organiza(matriz, size, index++);
+		imprimeMatriz(matriz, size, size);
+		pintaMatriz(matriz, size, LADO, PRETO);
+		al_flip_display();
+		Sleep(1000);
+	}while (nilPos != index--);
+
+	proxPos = proxPosNoQuad(matriz, 10, quad);
+	
+	printf("\nVOU COMECAR A TROCA!");
+	/// A PEDRA ESTA EM POSICAO, COMECAR A TROCAR.
+	do{
+		decProx = proxPos / 10;
+		uniProx = proxPos % 10;
+		if (decProx == dec) {
+			//Estao na mesma linha, mecha so as colunas
+			if (uni == uniProx) {
+				//A preta esta na posicao, trocar com o quadrado certo
+			}
+			else if (uni > uniProx) {
+				//Reduza as colunas, mova a peca para a esquerda
+			}
+			else {
+				//Mova para a esquerda
+			}
+		}
+		else if (decProx > dec) {
+			//Estao na mesma linha, mecha so as colunas
+			if (uni == uniProx) {
+				//A preta esta na posicao, trocar com o quadrado certo
+			}
+			else if (uni > uniProx) {
+				//Reduza as colunas, mova a peca para a esquerda
+			}
+			else {
+				//Mova para a esquerda
+			}
+		}
+		else {
+			//Reduza as linhas at iguala-las
+			if (uni == uniProx) {
+				//A preta esta na posicao, trocar com o quadrado certo
+			}
+			else if (uni > uniProx) {
+				//Reduza as colunas, mova a peca para a esquerda
+			}
+			else {
+				//Mova para a esquerda
+			}
+		}
+
+	} while (proxPos != index);
+
+
 
 	return 1;
 }
