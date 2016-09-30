@@ -4,7 +4,7 @@
 #include "allegro5\allegro.h"
 #include "allegro5\allegro_primitives.h"
 #include "allegro5\allegro_color.h"
-#include "C:\Temp\FuncoesUteisMatrizes.c"
+#include "C:\Users\Bruno Pastre\Desktop\FuncoesUteisMatrizes.c"
 
 #define SIZE 10
 #define LADO_QUADRADO 50
@@ -13,12 +13,14 @@
 #define HGT 600
 #define SLEEP 0
 
+int resetaPreta(int *, int);
+
 int pegaPreta(int *matriz, int size) {
 	int i, j, k;
 	for (i = 0; i < size; i++) {
 		for (j = 0; j < size; j++) {
 			k = j*size + i;
-			if (matriz[k]  == PRETO) {
+			if (matriz[k] == PRETO) {
 				return k;
 			}
 		}
@@ -26,7 +28,6 @@ int pegaPreta(int *matriz, int size) {
 
 	return 110;
 }
-//Retorta a POSICAO dovalor fora do lugar
 int posValor(int *matriz, int size, int valor) {
 	int i, j, k;
 	for (i = 0; i < size; i++) {
@@ -70,30 +71,8 @@ void avancaPeca(int *matriz, int size) {
 	al_flip_display();
 	Sleep(SLEEP);
 }
-int pegaQuadrante(int size, int valor) {
-	int linha = valor / size, coluna = valor% size;
-	if (linha < size / 2) {
-		if (coluna < size / 2)
-			return 2;
-		else
-			return 1;
-	}
-	else
-		if (coluna < size / 2)
-			return 3;
-		else
-			return 4;
-
-	return -1;
-}
-int saoDaMesmaCor(int *matriz, int size, int valorA, int valorB) {
-	if (pegaQuadrante(size, valorA) == pegaQuadrante(size, valorB))
-		return 1;
-	return 0;
-}
 int valorDaProxPecaFora(int *matriz, int size) {
-	int i, j, k, l;
-	//for (l = size - 1; l >= 0; l--)
+	int i, j, k;
 	for (i = size - 1; i >= 3; i--) {
 		for (j = size - 1; j >= 0; j--) {
 			k = i*size + j;
@@ -102,19 +81,25 @@ int valorDaProxPecaFora(int *matriz, int size) {
 				return k;
 			}
 		}
-	}
-//	return -3;
-	for (j = size - 1; j >= 0; j--) {
+	}	
 	for (i = 3; i >= 0; i--) {
-			k = i*size + j;
-			if (matriz[k] % size > size / 2 && posValor(matriz, size, k) % size < size / 2 && matriz[k] != PRETO) {
-				printf("\n\n\VOU ARRUMAR A %d\n\n", k);
-			//if (matriz[k] != k && matriz[k] != PRETO) {
+		for (j = size - 1; j >= 0; j--) {
+		k = i*size + j;
+			if (matriz[k] != PRETO && posValor(matriz, size, k) % size < size / 2 && k % size > size / 2) {
 				return k;
 			}
 		}
 	}
-	return -3;
+	resetaPreta(matriz, size);
+	for (i = size - 1; i >= 0; i--) {
+		for (j = size - 1; j >= 0; j--) {
+			k = i*size + j;
+			if (matriz[k] != k && matriz[k] != PRETO) {
+				return k;
+			}
+		}
+	}
+		return -30000;
 }
 int arrumaPreta(int *matriz, int size, int valor) {
 	int posDoValor = posValor(matriz, size, valor), posDaPreta = pegaPreta(matriz, size);
@@ -251,17 +236,10 @@ int arrumaPeca(int *matriz, int size, int peca) {
 	int posDaPeca = posValor(matriz, size, peca);
 	int posCertaDaPeca = peca;
 
-	if (peca == 28) {
-		while (matriz[28] != 28) {
-			if()
-		}
-	}
-
 	if (posCertaDaPeca % size == 0) {
 		if (posDaPeca == posCertaDaPeca)
 			return 1;
 		else if (posDaPeca + 1 == posCertaDaPeca) {
-			///DE A VOLTA
 			sobePeca(matriz, size);
 			avancaPeca(matriz, size);
 			avancaPeca(matriz, size);
@@ -270,19 +248,16 @@ int arrumaPeca(int *matriz, int size, int peca) {
 			return 1;
 		}
 		else if (posDaPeca - 1 == posCertaDaPeca) {
-			///DE A VOLTA
 			avancaPeca(matriz, size);
 			return 1;
 		}
 		else if (posDaPeca + size == posCertaDaPeca) {
-			///MOVA PARA BAIXO,
 			descePeca(matriz, size);
 			avancaPeca(matriz, size);
 			sobePeca(matriz, size);
 			return 1;
 		}
 		else if (posDaPeca - size == posCertaDaPeca) {
-			///mova para cima
 			sobePeca(matriz, size);
 			avancaPeca(matriz, size);
 			descePeca(matriz, size);
@@ -291,7 +266,6 @@ int arrumaPeca(int *matriz, int size, int peca) {
 
 
 		else if ((posDaPeca / 10) + 1 > posCertaDaPeca / 10) {
-			///SUBA A PECA
 			sobePeca(matriz, size);
 			avancaPeca(matriz, size);
 			descePeca(matriz, size);
@@ -300,7 +274,6 @@ int arrumaPeca(int *matriz, int size, int peca) {
 			return arrumaPeca(matriz, size, peca);
 		}
 		else if ((posDaPeca / 10) + 1 < posCertaDaPeca / 10) {
-			///DESCA A PECA
 			descePeca(matriz, size);
 			avancaPeca(matriz, size);
 			sobePeca(matriz, size);
@@ -309,7 +282,6 @@ int arrumaPeca(int *matriz, int size, int peca) {
 			return arrumaPeca(matriz, size, peca);
 		}
 		else if (posDaPeca % 10 > posCertaDaPeca % 10) {
-			///VOLTE A PECA
 			if (posDaPeca / 10 == 0) {
 				avancaPeca(matriz, size);
 				descePeca(matriz, size);
@@ -328,7 +300,6 @@ int arrumaPeca(int *matriz, int size, int peca) {
 			}
 		}
 		else if (posDaPeca % 10 < posCertaDaPeca % 10) {
-			///AVANCE A PECA
 			if (posDaPeca / 10 == 0) {
 				descePeca(matriz, size);
 				avancaPeca(matriz, size);
@@ -352,7 +323,6 @@ int arrumaPeca(int *matriz, int size, int peca) {
 		if (posDaPeca == posCertaDaPeca)
 			return 1;
 		else if (posDaPeca + 1 == posCertaDaPeca) {
-			///DE A VOLTA
 			sobePeca(matriz, size);
 			avancaPeca(matriz, size);
 			avancaPeca(matriz, size);
@@ -361,19 +331,16 @@ int arrumaPeca(int *matriz, int size, int peca) {
 			return 1;
 		}
 		else if (posDaPeca - 1 == posCertaDaPeca) {
-			///DE A VOLTA
 			avancaPeca(matriz, size);
 			return 1;
 		}
 		else if (posDaPeca + size == posCertaDaPeca) {
-			///MOVA PARA BAIXO
 			descePeca(matriz, size);
 			avancaPeca(matriz, size);
 			sobePeca(matriz, size);
 			return 1;
 		}
 		else if (posDaPeca - size == posCertaDaPeca) {
-			///mova para cima
 			sobePeca(matriz, size);
 			avancaPeca(matriz, size);
 			descePeca(matriz, size);
@@ -381,7 +348,6 @@ int arrumaPeca(int *matriz, int size, int peca) {
 		}
 
 		else if (posDaPeca % 10 > posCertaDaPeca % 10) {
-			///VOLTE A PECA
 			if (posDaPeca / 10 == 0) {
 				avancaPeca(matriz, size);
 				descePeca(matriz, size);
@@ -400,7 +366,6 @@ int arrumaPeca(int *matriz, int size, int peca) {
 			}
 		}
 		else if (posDaPeca % 10 < posCertaDaPeca % 10) {
-			///AVANCE A PECA
 			if (posDaPeca / 10 == 0) {
 				descePeca(matriz, size);
 				avancaPeca(matriz, size);
@@ -420,7 +385,6 @@ int arrumaPeca(int *matriz, int size, int peca) {
 		}
 
 		else if (posDaPeca / 10 > posCertaDaPeca / 10) {
-			///SUBA A PECA
 			sobePeca(matriz, size);
 			avancaPeca(matriz, size);
 			descePeca(matriz, size);
@@ -429,7 +393,6 @@ int arrumaPeca(int *matriz, int size, int peca) {
 			return arrumaPeca(matriz, size, peca);
 		}
 		else if (posDaPeca / 10 < posCertaDaPeca / 10) {
-			///DESCA A PECA
 			descePeca(matriz, size);
 			avancaPeca(matriz, size);
 			sobePeca(matriz, size);
@@ -439,6 +402,19 @@ int arrumaPeca(int *matriz, int size, int peca) {
 		}
 	}
 	return -1;
+}
+int arrumaTudo(int *matriz, int size) {
+	int valorFora = valorDaProxPecaFora(matriz, size);
+	printf("\n*****\n VALOR: %d\n****************\n", valorFora);
+	if (valorFora > 0) {
+		if (valorFora == 18 || valorFora == 17 || valorFora == 12 || valorFora == 16 ) {
+			resetaPreta(matriz, size);
+		}
+		arrumaPreta(matriz, size, valorFora);
+		arrumaPeca(matriz, size, valorFora);
+		return arrumaTudo(matriz, size);
+	}
+	else return 1;
 }
 int main() {
 	if (!al_init())
@@ -455,27 +431,14 @@ int main() {
 	al_flip_display();
 	imprimeMatriz(ptMat, SIZE, SIZE);
 	Sleep(1000);
-	embaralhaVetor(ptMat, SIZE * SIZE);
 	matriz[0][0] = PRETO;
+	embaralhaVetor(ptMat, SIZE * SIZE);
 	pintaMatriz(ptMat, SIZE, LADO_QUADRADO, PRETO, NULL);
 	al_flip_display();
 	imprimeMatriz(ptMat, SIZE, SIZE);
 
-	int valorFora = valorDaProxPecaFora(ptMat, SIZE);
-	//do{
-	while (valorFora != -3) {
-		valorFora = valorDaProxPecaFora(ptMat, SIZE);
-		printf("\n\n%d\n\n", valorFora);
-		if(arrumaPreta(ptMat, SIZE, valorFora) != 110)
-		arrumaPeca(ptMat, SIZE, valorFora);
-		else return 1;
-		if (ptMat[valorFora - 1] == ptMat[valorFora] - 1) {
-		//	resetaPreta(ptMat, SIZE);
-		}
-
-		//resetaPreta(ptMat, SIZE);
-	}
-
+	arrumaTudo(ptMat, SIZE);
+	
 	system("pause");
 	return 0;
 }
