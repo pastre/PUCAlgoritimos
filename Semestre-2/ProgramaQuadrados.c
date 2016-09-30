@@ -11,16 +11,16 @@
 #define PRETO -10
 #define WDT 800
 #define HGT 600
-#define SLEEP 10
+#define SLEEP 0
 
-int limite = 8;
 int pegaPreta(int *matriz, int size) {
 	int i, j, k;
 	for (i = 0; i < size; i++) {
 		for (j = 0; j < size; j++) {
 			k = j*size + i;
-			if (matriz[k] < 0)
+			if (matriz[k]  == PRETO) {
 				return k;
+			}
 		}
 	}
 
@@ -97,29 +97,63 @@ int valorDaProxPecaFora(int *matriz, int size) {
 	for (i = size - 1; i >= 3; i--) {
 		for (j = size - 1; j >= 0; j--) {
 			k = i*size + j;
-			printf("\nLoopei %d\n", k);
-			if (matriz[k] != k && matriz[k] != PRETO )
+			if (matriz[k] != k && matriz[k] != PRETO) {
+				printf("\nVou arrumar a %d \n", k);
 				return k;
+			}
 		}
 	}
-	return 1;
-	for (i = 4; i >= 0; i--) {
-		for (j = size - 1; j >= 0; j--) {
-			k = j*size + i;
-			printf("\nLoopei %d\n", k);
-			if (matriz[k] != k && matriz[k] != PRETO )
+//	return -3;
+	for (j = size - 1; j >= 0; j--) {
+	for (i = 3; i >= 0; i--) {
+			k = i*size + j;
+			if (matriz[k] % size > size / 2 && posValor(matriz, size, k) % size < size / 2 && matriz[k] != PRETO) {
+				printf("\n\n\VOU ARRUMAR A %d\n\n", k);
+			//if (matriz[k] != k && matriz[k] != PRETO) {
 				return k;
-
+			}
 		}
 	}
-
-
-
-	return -1;
+	return -3;
 }
 int arrumaPreta(int *matriz, int size, int valor) {
 	int posDoValor = posValor(matriz, size, valor), posDaPreta = pegaPreta(matriz, size);
-
+	if (posDoValor / size == 0) {
+		if (matriz[posDoValor + 1] == PRETO) {
+			trasPeca(matriz, size);
+			return 1;
+		}
+		else if (matriz[posDoValor + size] == PRETO) {
+			avancaPeca(matriz, size);
+			sobePeca(matriz, size);
+			trasPeca(matriz, size);
+			return 1;
+		}
+		else if (matriz[posDoValor - size] == PRETO) {
+			avancaPeca(matriz, size);
+			descePeca(matriz, size);
+			trasPeca(matriz, size);
+			return 1;
+		}
+		else if (posDoValor / size > posDaPreta / 10) {
+			descePeca(matriz, size);
+			return arrumaPreta(matriz, size, valor);
+		}
+		else if (posDoValor / size < posDaPreta / 10) {
+			sobePeca(matriz, size);
+			return arrumaPreta(matriz, size, valor);
+		}
+		else if (posDoValor % size > posDaPreta % size) {
+			avancaPeca(matriz, size);
+			return arrumaPreta(matriz, size, valor);
+		}
+		else if (posDoValor % size < posDaPreta % size) {
+			trasPeca(matriz, size);
+			return arrumaPreta(matriz, size, valor);
+		}
+		printf("A preta ta alinhada com a peca de valor %d", valor);
+		return -1;
+	}
 	if (posDoValor % size == 0) {
 		if (matriz[posDoValor + 1] == PRETO) {
 			trasPeca(matriz, size);
@@ -213,11 +247,17 @@ int resetaPreta(int *ptMat, int size) {
 	}
 	return 0;
 }
-int arrumaPeca(int *matriz, int size) {
-	int posDaPeca = pegaPreta(matriz, size) + 1;
-	int posCertaDaPeca = valorDaProxPecaFora(matriz, size);
-	if (posCertaDaPeca % 10 == 0) {
+int arrumaPeca(int *matriz, int size, int peca) {
+	int posDaPeca = posValor(matriz, size, peca);
+	int posCertaDaPeca = peca;
 
+	if (peca == 28) {
+		while (matriz[28] != 28) {
+			if()
+		}
+	}
+
+	if (posCertaDaPeca % size == 0) {
 		if (posDaPeca == posCertaDaPeca)
 			return 1;
 		else if (posDaPeca + 1 == posCertaDaPeca) {
@@ -257,7 +297,7 @@ int arrumaPeca(int *matriz, int size) {
 			descePeca(matriz, size);
 			trasPeca(matriz, size);
 			sobePeca(matriz, size);
-			return arrumaPeca(matriz, size);
+			return arrumaPeca(matriz, size, peca);
 		}
 		else if ((posDaPeca / 10) + 1 < posCertaDaPeca / 10) {
 			///DESCA A PECA
@@ -266,7 +306,7 @@ int arrumaPeca(int *matriz, int size) {
 			sobePeca(matriz, size);
 			trasPeca(matriz, size);
 			descePeca(matriz, size);
-			return arrumaPeca(matriz, size);
+			return arrumaPeca(matriz, size, peca);
 		}
 		else if (posDaPeca % 10 > posCertaDaPeca % 10) {
 			///VOLTE A PECA
@@ -276,7 +316,7 @@ int arrumaPeca(int *matriz, int size) {
 				trasPeca(matriz, size);
 				trasPeca(matriz, size);
 				sobePeca(matriz, size);
-				return arrumaPeca(matriz, size);
+				return arrumaPeca(matriz, size, peca);
 			}
 			else {
 				avancaPeca(matriz, size);
@@ -284,7 +324,7 @@ int arrumaPeca(int *matriz, int size) {
 				trasPeca(matriz, size);
 				trasPeca(matriz, size);
 				descePeca(matriz, size);
-				return arrumaPeca(matriz, size);
+				return arrumaPeca(matriz, size, peca);
 			}
 		}
 		else if (posDaPeca % 10 < posCertaDaPeca % 10) {
@@ -295,7 +335,7 @@ int arrumaPeca(int *matriz, int size) {
 				avancaPeca(matriz, size);
 				sobePeca(matriz, size);
 				trasPeca(matriz, size);
-				return arrumaPeca(matriz, size);
+				return arrumaPeca(matriz, size, peca);
 			}
 			else {
 				sobePeca(matriz, size);
@@ -303,7 +343,7 @@ int arrumaPeca(int *matriz, int size) {
 				avancaPeca(matriz, size);
 				descePeca(matriz, size);
 				trasPeca(matriz, size);
-				return arrumaPeca(matriz, size);
+				return arrumaPeca(matriz, size, peca);
 			}
 		}
 
@@ -348,7 +388,7 @@ int arrumaPeca(int *matriz, int size) {
 				trasPeca(matriz, size);
 				trasPeca(matriz, size);
 				sobePeca(matriz, size);
-				return arrumaPeca(matriz, size);
+				return arrumaPeca(matriz, size, peca);
 			}
 			else {
 				avancaPeca(matriz, size);
@@ -356,7 +396,7 @@ int arrumaPeca(int *matriz, int size) {
 				trasPeca(matriz, size);
 				trasPeca(matriz, size);
 				descePeca(matriz, size);
-				return arrumaPeca(matriz, size);
+				return arrumaPeca(matriz, size, peca);
 			}
 		}
 		else if (posDaPeca % 10 < posCertaDaPeca % 10) {
@@ -367,7 +407,7 @@ int arrumaPeca(int *matriz, int size) {
 				avancaPeca(matriz, size);
 				sobePeca(matriz, size);
 				trasPeca(matriz, size);
-				return arrumaPeca(matriz, size);
+				return arrumaPeca(matriz, size, peca);
 			}
 			else {
 				sobePeca(matriz, size);
@@ -375,7 +415,7 @@ int arrumaPeca(int *matriz, int size) {
 				avancaPeca(matriz, size);
 				descePeca(matriz, size);
 				trasPeca(matriz, size);
-				return arrumaPeca(matriz, size);
+				return arrumaPeca(matriz, size, peca);
 			}
 		}
 
@@ -386,7 +426,7 @@ int arrumaPeca(int *matriz, int size) {
 			descePeca(matriz, size);
 			trasPeca(matriz, size);
 			sobePeca(matriz, size);
-			return arrumaPeca(matriz, size);
+			return arrumaPeca(matriz, size, peca);
 		}
 		else if (posDaPeca / 10 < posCertaDaPeca / 10) {
 			///DESCA A PECA
@@ -395,7 +435,7 @@ int arrumaPeca(int *matriz, int size) {
 			sobePeca(matriz, size);
 			trasPeca(matriz, size);
 			descePeca(matriz, size);
-			return arrumaPeca(matriz, size);
+			return arrumaPeca(matriz, size, peca);
 		}
 	}
 	return -1;
@@ -421,22 +461,20 @@ int main() {
 	al_flip_display();
 	imprimeMatriz(ptMat, SIZE, SIZE);
 
-	int valorFora;
+	int valorFora = valorDaProxPecaFora(ptMat, SIZE);
 	//do{
-	while (1) {
+	while (valorFora != -3) {
 		valorFora = valorDaProxPecaFora(ptMat, SIZE);
 		printf("\n\n%d\n\n", valorFora);
-		arrumaPreta(ptMat, SIZE, valorFora);
-		arrumaPeca(ptMat, SIZE);
-		resetaPreta(ptMat, SIZE);
+		if(arrumaPreta(ptMat, SIZE, valorFora) != 110)
+		arrumaPeca(ptMat, SIZE, valorFora);
+		else return 1;
+		if (ptMat[valorFora - 1] == ptMat[valorFora] - 1) {
+		//	resetaPreta(ptMat, SIZE);
+		}
+
+		//resetaPreta(ptMat, SIZE);
 	}
-	//} while (valorFora != -1);
-	//	while (valorFora != -1) {
-	//Arruma a peca de valor valorFora
-	//	arrumaPeca(matriz, size, valorFora);
-	//Sleep(SLEEP);
-	//valorFora = valorDaProxPecaFora(matriz, size);
-	//}
 
 	system("pause");
 	return 0;
