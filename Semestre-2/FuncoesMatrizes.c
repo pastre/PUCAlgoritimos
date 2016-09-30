@@ -7,10 +7,10 @@
 #include "allegro5\allegro_color.h"
 #include "allegro5\allegro_font.h"
 
-#define cor1  al_map_rgb(44, 117, 255)
-#define cor2  al_map_rgb(117, 44, 255)
-#define cor3  al_map_rgb(200, 117, 44)
-#define cor4  al_map_rgb(244, 44, 117)
+#define cor1  al_map_rgb(0, 255, 0)
+#define cor2  al_map_rgb(0, 0, 255)
+#define cor3  al_map_rgb(255, 0, 0)
+#define cor4  al_map_rgb(255, 255, 0)
 
 int jk, jh;
 //Pinta o quadrado, parametros sao matriz;tamanho;valor;x;y;lado
@@ -102,6 +102,7 @@ void populaMatriz(int *matriz, int size) {
 
 void imprimeMatriz(int *mat, int col, int lin) {
 	int i, j;
+	printf("\n");
 	for (i = 0; i < lin; i++) {
 		for (j = 0; j < col; j++) {
 			printf(" %d", *(mat + (i*col + j)));
